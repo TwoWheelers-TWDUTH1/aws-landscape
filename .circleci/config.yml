@@ -1,71 +1,71 @@
 defaults: &defaults
   docker:
-  - image: timjdfletcher/infrabox
+    - image: timjdfletcher/infrabox
   working_directory: /home/circleci/project
 
 version: 2
 jobs:
- dummy:
+  dummy:
     <<: *defaults
     steps:
-    - run:
-        command: echo "hello world"
+      - run:
+          command: echo "Fan-out step"
 
- firstTimeSetup:
-   <<: *defaults
-   steps:
-   - checkout
-   - run:
-       command: source /okta_venv/bin/activate;
-               ./scripts/create_tf_state_bucket.sh $TRAINING_COHORT;
-               ./scripts/create_key_pair.sh $TRAINING_COHORT;
+  firstTimeSetup:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/create_tf_state_bucket.sh $TRAINING_COHORT;
+            ./scripts/create_key_pair.sh $TRAINING_COHORT;
 
- buildProductionEnvironment:
-     <<: *defaults
-     steps:
-     - checkout
-     - run:
-         command: source /okta_venv/bin/activate;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT base_networking apply -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT bastion apply -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket apply -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster apply -input=false -auto-approve -var-file=prod-env.tfvars;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka apply -input=false -auto-approve -var-file=prod-env.tfvars;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT ingester apply -input=false -auto-approve -var-file=prod-env.tfvars;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard apply -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn apply -input=false -auto-approve;
+  buildProductionEnvironment:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT base_networking apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT bastion apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster apply -input=false -auto-approve -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka apply -input=false -auto-approve -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT ingester apply -input=false -auto-approve -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn apply -input=false -auto-approve;
 
- buildClientVPN:
-     <<: *defaults
-     steps:
-     - checkout
-     - run:
-         command: source /okta_venv/bin/activate;
-                  ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn apply -input=false -auto-approve;
+  buildClientVPN:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn apply -input=false -auto-approve;
 
- buildAMIs:
-     <<: *defaults
-     steps:
-     - checkout
-     - run:
-         command: source /okta_venv/bin/activate;
-                 ./scripts/build_ami.sh training_kafka ;
-                 ./scripts/build_ami.sh training_ingester ;
+  buildAMIs:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/build_ami.sh training_kafka ;
+            ./scripts/build_ami.sh training_ingester ;
 
- destroyProductionEnvironment:
-     <<: *defaults
-     steps:
-     - checkout
-     - run:
-         command: source /okta_venv/bin/activate;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn destroy -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard destroy -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT ingester destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket destroy -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT bastion destroy -input=false -auto-approve;
-                 ./scripts/run_terraform.sh $TRAINING_COHORT base_networking destroy -input=false -auto-approve;
+  destroyProductionEnvironment:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT ingester destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster destroy -input=false -auto-approve -var-file=prod-env.tfvars ;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT bastion destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT base_networking destroy -input=false -auto-approve;
 
 workflows:
   version: 2
