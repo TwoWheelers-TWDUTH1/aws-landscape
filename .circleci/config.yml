@@ -33,7 +33,6 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka plan -input=false -var-file=prod-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT ingester plan -input=false -var-file=prod-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn plan -input=false;
 
   buildProductionEnvironment:
     <<: *defaults
@@ -48,7 +47,6 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka apply -input=false -auto-approve -var-file=prod-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT ingester apply -input=false -auto-approve -var-file=prod-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard apply -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT client_vpn apply -input=false -auto-approve;
 
   planClientVPN:
     <<: *defaults
