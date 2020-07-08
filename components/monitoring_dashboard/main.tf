@@ -161,6 +161,34 @@ resource "aws_cloudwatch_dashboard" "main" {
                     }
                 }
             }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 15,
+            "width": 12,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "stationMart-monitoring", "last-update", "data", "stationMart" ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "${var.aws_region}",
+                "stat": "Average",
+                "period": 60,
+                "title": "Delivery File's Age",
+                "yAxis": {
+                    "left": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "",
+                        "showUnits": true
+                    }
+                }
+            }
         }
     ]
 }
