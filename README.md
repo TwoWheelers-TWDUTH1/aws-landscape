@@ -53,8 +53,8 @@ Set the following environment variables:
 For example:
 
 ```
-export AWS_DEFAULT_REGION=us-east-2
-export TRAINING_COHORT=chicago-fall-2018
+export AWS_DEFAULT_REGION=asia-southeast-1
+export TRAINING_COHORT=twdu-th-1
 ```
 
 
@@ -250,12 +250,12 @@ When connected to the VPN, the following SSH commands should work:
 
 Also, you should be able to see the following resources:
 
-| Resource | Link |
-| -------- | ---- |
-|YARN ResourceManager |	http://emr-master.$TRAINING_COHORT.training:8088/ |
-|Hadoop HDFS NameNode |	http://emr-master.$TRAINING_COHORT.training:50070/ |
-|Spark HistoryServer	| http://emr-master.$TRAINING_COHORT.training:18080/ |
-|Zeppelin	| http://emr-master.$TRAINING_COHORT.training:8890/ |
-|Hue	| http://emr-master.$TRAINING_COHORT.training:8888/ |
-|Ganglia | http://emr-master.$TRAINING_COHORT.training/ganglia/ |
+| Resource             | Link                                                 |
+| -------------------- | ---------------------------------------------------- |
+| YARN ResourceManager | http://emr-master.$TRAINING_COHORT.training:8088/    |
+| Hadoop HDFS NameNode | http://emr-master.$TRAINING_COHORT.training:50070/   |
+| Spark HistoryServer  | http://emr-master.$TRAINING_COHORT.training:18080/   |
+| Zeppelin             | http://emr-master.$TRAINING_COHORT.training:8890/    |
+| Hue                  | http://emr-master.$TRAINING_COHORT.training:8888/    |
+| Ganglia              | http://emr-master.$TRAINING_COHORT.training/ganglia/ |
 
