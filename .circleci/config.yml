@@ -126,14 +126,18 @@ workflows:
           requires:
             - approvebuildAMIs
 
-      - buildTestEnvironment:
+      - approveBuildTestEnvironment:
+          type: approval
           requires:
             - dummy
+      - buildTestEnvironment:
+          requires:
+            - approveBuildTestEnvironment
 
       - approveBuildProductionEnvironment:
           type: approval
           requires:
-            - buildTestEnvironment
+            - dummy
       - buildProductionEnvironment:
           requires:
             - approveBuildProductionEnvironment
