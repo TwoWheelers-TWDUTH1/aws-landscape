@@ -53,7 +53,7 @@ Set the following environment variables:
 For example:
 
 ```
-export AWS_DEFAULT_REGION=asia-southeast-1
+export AWS_DEFAULT_REGION=ap-southeast-1
 export TRAINING_COHORT=twdu-th-1
 ```
 
@@ -169,7 +169,7 @@ Add `0.0.0.0/0` as Destination network to enable  and Allow access to all users.
 
 ##### Add route table to client vpn with publics subnets:
 
-With the Client VPN Endpoint Selected, go to Authorization Tab.
+With the Client VPN Endpoint Selected, go to Route Table.
 
 Press Create Route.
 
