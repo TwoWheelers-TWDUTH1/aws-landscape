@@ -36,6 +36,21 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST client_vpn apply -input=false -auto-approve;
 
+  destroyTestEnvironment:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST client_vpn destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking destroy -input=false -auto-approve;
+
   planProductionEnvironment:
     <<: *defaults
     steps:
@@ -133,6 +148,14 @@ workflows:
       - buildTestEnvironment:
           requires:
             - approveBuildTestEnvironment
+
+      - approveDestroyTestEnvironment:
+          type: approval
+          requires:
+            - dummy
+      - destroyTestEnvironment:
+          requires:
+            - approveDestroyTestEnvironment
 
       - approveBuildProductionEnvironment:
           type: approval
