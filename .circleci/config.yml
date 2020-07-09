@@ -20,25 +20,12 @@ jobs:
             ./scripts/create_tf_state_bucket.sh $TRAINING_COHORT;
             ./scripts/create_key_pair.sh $TRAINING_COHORT;
 
-<<<<<<< HEAD
-  planProductionEnvironment:
-=======
   buildTestEnvironment:
->>>>>>> [Mike, Pai, Jas] Add build test env stage to pipeline
     <<: *defaults
     steps:
       - checkout
       - run:
           command: source /okta_venv/bin/activate;
-<<<<<<< HEAD
-            ./scripts/run_terraform.sh $TRAINING_COHORT base_networking plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT bastion plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster plan -input=false -var-file=prod-env.tfvars;
-            ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka plan -input=false -var-file=prod-env.tfvars;
-            ./scripts/run_terraform.sh $TRAINING_COHORT ingester plan -input=false -var-file=prod-env.tfvars;
-            ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard plan -input=false;
-=======
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket apply -input=false -auto-approve;
@@ -46,7 +33,20 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST client_vpn apply -input=false -auto-approve;
->>>>>>> [Mike, Pai, Jas] Add build test env stage to pipeline
+
+  planProductionEnvironment:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT base_networking plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT bastion plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_bucket plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_emr_cluster plan -input=false -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT training_kafka plan -input=false -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT ingester plan -input=false -var-file=prod-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT monitoring_dashboard plan -input=false;
 
   buildProductionEnvironment:
     <<: *defaults
