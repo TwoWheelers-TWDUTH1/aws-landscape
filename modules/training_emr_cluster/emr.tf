@@ -48,6 +48,7 @@ resource "aws_emr_cluster" "training_cluster" {
     instance_type  = "${var.core_type}"
     instance_count = "${var.core_count}"
     ebs_config {
+      iops = "0"
       size = "500"
       type = "gp2"
     }
