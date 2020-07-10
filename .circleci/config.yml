@@ -22,6 +22,20 @@ jobs:
             ./scripts/create_tf_state_bucket.sh $TRAINING_COHORT_TEST;
             gst./scripts/create_key_pair.sh $TRAINING_COHORT_TEST;
 
+
+  planTestEnvironment:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          command: source /okta_venv/bin/activate;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester plan -input=false;
+
   buildTestEnvironment:
     <<: *defaults
     steps:
@@ -141,10 +155,13 @@ workflows:
           requires:
             - approvebuildAMIs
 
+      - planTestEnvironment:
+          requires:
+            - dummy
       - approveBuildTestEnvironment:
           type: approval
           requires:
-            - dummy
+            - planTestEnvironment
       - buildTestEnvironment:
           requires:
             - approveBuildTestEnvironment
