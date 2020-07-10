@@ -174,10 +174,13 @@ workflows:
           requires:
             - approveDestroyTestEnvironment
 
+      - planProductionEnvironment:
+          requires:
+            - dummy
       - approveBuildProductionEnvironment:
           type: approval
           requires:
-            - dummy
+            - planProductionEnvironment
       - buildProductionEnvironment:
           requires:
             - approveBuildProductionEnvironment
