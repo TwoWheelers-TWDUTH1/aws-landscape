@@ -1,5 +1,13 @@
 resource "aws_security_group" "sg" {
   vpc_id = "${var.vpc_id}"
+
+  ingress {
+    description = "everything"
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "all"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
 }
 
 resource "aws_msk_cluster" "training_msk" {
