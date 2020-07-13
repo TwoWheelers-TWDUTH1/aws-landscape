@@ -1,3 +1,7 @@
+terraform {
+  backend "s3" {}
+}
+
 data "terraform_remote_state" "training-msk" {
   backend = "s3"
   config {
