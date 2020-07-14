@@ -55,3 +55,8 @@ resource "aws_iam_role_policy_attachment" "emr_node_role_attachment" {
   role = "${aws_iam_role.emr_node.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role"
 }
+
+resource "aws_iam_role_policy_attachment" "emr_node_role_kafka_read_attachment" {
+  role = "${aws_iam_role.emr_node.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonMSKReadOnlyAccess"
+}
