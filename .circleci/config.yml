@@ -176,7 +176,7 @@ workflows:
 
       - planProductionEnvironment:
           requires:
-            - dummy
+            - buildTestEnvironment
       - approveBuildProductionEnvironment:
           type: approval
           requires:
