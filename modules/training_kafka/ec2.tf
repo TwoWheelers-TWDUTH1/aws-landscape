@@ -1,5 +1,5 @@
 resource "aws_instance" "kafka" {
-  ami                    = "ami-030a4d71993f6b30b" //${data.aws_ami.training_kafka.image_id}"
+  ami                    = "ami-01dd36343fe7a0c8a" //${data.aws_ami.training_kafka.image_id}"
   instance_type          = "${var.instance_type}"
   vpc_security_group_ids = ["${aws_security_group.kafka.id}"]
   subnet_id              = "${var.subnet_id}"
