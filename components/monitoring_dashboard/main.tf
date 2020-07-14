@@ -189,6 +189,26 @@ resource "aws_cloudwatch_dashboard" "main" {
                     }
                 }
             }
+        },
+        {
+            "view": "timeSeries",
+            "stacked": false,
+            "metrics": [
+                [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ],
+                [ "...", "StationInformationSaverApp" ],
+                [ "...", "StationStatusSaverApp" ]
+            ],
+            "region": "ap-southeast-1",
+            "title": "Application Status",
+            "period": 300,
+            "yAxis": {
+                "left": {
+                    "min": 0,
+                    "max": 1,
+                    "label": "is_app_running",
+                    "showUnits": false
+                }
+            }
         }
     ]
 }
