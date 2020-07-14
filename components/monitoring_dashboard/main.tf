@@ -177,7 +177,7 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "stationMart-monitoring", "station-last-updated-age" ]
+                    [ "stationMart-monitoring", "station-last-updated-age", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}" ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
@@ -210,7 +210,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                 "stat": "Average",
                 "period": 300,
                 "metrics": [
-                    [ "stationMart-monitoring", "station-last-updated-age" ]
+                    [ "stationMart-monitoring", "station-last-updated-age", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}" ]
                 ],
                 "title": "Station Last Updated Age (Median)",
                 "start": "-PT12H",
