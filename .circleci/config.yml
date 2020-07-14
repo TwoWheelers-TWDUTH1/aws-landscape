@@ -35,6 +35,7 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster plan -input=false;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka plan -input=false;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard plan -input=false;
 
   buildTestEnvironment:
     <<: *defaults
@@ -48,7 +49,7 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester apply -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST client_vpn apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard apply -input=false -auto-approve;
 
   destroyTestEnvironment:
     <<: *defaults
