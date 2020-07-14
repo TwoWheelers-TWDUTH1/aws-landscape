@@ -10,11 +10,24 @@ resource "aws_security_group" "sg" {
   }
 }
 
+resource "aws_msk_configuration" "msk_config" {
+  kafka_versions = ["1.1.1"]
+  name = "msk-config"
+  server_properties = <<PROPERTIES
+auto.create.topics.enable = true
+PROPERTIES
+}
+
 resource "aws_msk_cluster" "training_msk" {
   cluster_name           = "${var.deployment_identifier}"
   kafka_version          = "1.1.1"
   number_of_broker_nodes = 3
   enhanced_monitoring = "PER_TOPIC_PER_BROKER"
+
+  configuration_info {
+    arn = "${aws_msk_configuration.msk_config.arn}"
+    revision = "${aws_msk_configuration.msk_config.latest_revision}"
+  }
 
   encryption_info {
     encryption_in_transit {
