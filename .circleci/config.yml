@@ -32,9 +32,9 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking plan -input=false;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion plan -input=false;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka plan -input=false;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester plan -input=false;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster plan -input=false -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka plan -input=false -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester plan -input=false -var-file=test-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard plan -input=false;
 
   buildTestEnvironment:
@@ -46,9 +46,9 @@ jobs:
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion apply -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket apply -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster apply -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka apply -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester apply -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster apply -input=false -auto-approve -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka apply -input=false -auto-approve -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester apply -input=false -auto-approve -var-file=test-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard apply -input=false -auto-approve;
 
   destroyTestEnvironment:
@@ -59,9 +59,9 @@ jobs:
           command: source /okta_venv/bin/activate;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST client_vpn destroy -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST monitoring_dashboard destroy -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester destroy -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka destroy -input=false -auto-approve;
-            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster destroy -input=false -auto-approve;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST ingester destroy -input=false -auto-approve -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_kafka destroy -input=false -auto-approve -var-file=test-env.tfvars;
+            ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_emr_cluster destroy -input=false -auto-approve -var-file=test-env.tfvars;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST training_bucket destroy -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST bastion destroy -input=false -auto-approve;
             ./scripts/run_terraform.sh $TRAINING_COHORT_TEST base_networking destroy -input=false -auto-approve;

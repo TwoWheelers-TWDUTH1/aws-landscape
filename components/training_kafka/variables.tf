@@ -8,7 +8,4 @@ variable "aws_region" {
 
 variable "kafka" {
   type = "map"
-  default = {
-    instance_type = "m4.large"
-  }
 }

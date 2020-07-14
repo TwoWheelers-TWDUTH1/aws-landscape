@@ -8,7 +8,4 @@ variable "aws_region" {
 
 variable "ingester" {
   type = "map"
-  default = {
-    instance_type = "t2.medium"
-  }
 }
