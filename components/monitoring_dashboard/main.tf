@@ -36,7 +36,7 @@ data "terraform_remote_state" "ingester" {
 }
 
 resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = "2wheelers"
+  dashboard_name = "2wheelers-${var.cohort}"
   dashboard_body = <<EOF
 {
     "widgets": [
@@ -48,13 +48,15 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "System/Linux", "MemoryUtilization", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", { "label": "MemoryUtilization" } ],
-                    [ ".", "DiskSpaceUtilization", "MountPath", "/", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", "Filesystem", "/dev/xvda1" ]
+                    [ "System/Linux", "MemoryUtilization", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", { "label": "MemoryUtilization", "color": "#ff7f0e" } ],
+                    [ ".", "DiskSpaceUtilization", "MountPath", "/", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", "Filesystem", "/dev/xvda1", { "label": "DiskSpaceUtilization", "color": "#1f77b4" } ],
+                    [ "AWS/EC2", "CPUUtilization", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", { "color": "#2ca02c", "yAxis": "left" } ]
                 ],
                 "view": "singleValue",
                 "region": "${var.aws_region}",
                 "title": "Kafka",
-                "period": 300
+                "period": 300,
+                "stat": "Average"
             }
         },
         {
@@ -65,16 +67,17 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 9,
             "properties": {
                 "metrics": [
-                    [ "AWS/ElasticMapReduce", "HDFSUtilization", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}" ],
-                    [ ".", "AppsRunning", ".", "." ],
-                    [ ".", "AppsPending", ".", "." ],
-                    [ ".", "YARNMemoryAvailablePercentage", ".", "." ]
+                    [ "AWS/ElasticMapReduce", "HDFSUtilization", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", { "color": "#1f77b4" } ],
+                    [ ".", "AppsRunning", ".", ".", { "color": "#2ca02c" } ],
+                    [ ".", "AppsPending", ".", ".", { "color": "#ff7f0e" } ],
+                    [ ".", "YARNMemoryAvailablePercentage", ".", ".", { "color": "#d62728" } ]
                 ],
                 "view": "singleValue",
                 "stacked": false,
                 "region": "${var.aws_region}",
                 "period": 300,
-                "title": "EMR HDFS"
+                "title": "EMR HDFS",
+                "stat": "Average"
             }
         },
         {
@@ -85,16 +88,17 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ { "expression": "m2+m3", "label": "MemoryUsed", "id": "e1", "color": "#d62728" } ],
-                    [ "AWS/ElasticMapReduce", "MemoryTotalMB", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", { "id": "m1", "color": "#1f77b4" } ],
-                    [ ".", "MemoryReservedMB", ".", ".", { "id": "m2", "color": "#bcbd22" } ],
-                    [ ".", "MemoryAllocatedMB", ".", ".", { "id": "m3", "color": "#ff7f0e" } ]
+                    [ { "expression": "m5+m6", "label": "MemoryUsed", "id": "e1", "color": "#d62728", "region": "${var.aws_region}" } ],
+                    [ "AWS/ElasticMapReduce", "MemoryAllocatedMB", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", { "id": "m4" } ],
+                    [ ".", "MemoryReservedMB", ".", ".", { "id": "m5" } ],
+                    [ ".", "MemoryTotalMB", ".", ".", { "id": "m6", "color": "#9467bd" } ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
                 "region": "${var.aws_region}",
                 "period": 300,
-                "title": "EMR Cluster Memory Usage"
+                "title": "EMR Cluster Memory Usage",
+                "stat": "Average"
             }
         },
         {
@@ -105,8 +109,9 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "System/Linux", "DiskSpaceUtilization", "MountPath", "/", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", "Filesystem", "/dev/xvda1", { "label": "DiskSpaceUtilization" } ],
-                    [ ".", "MemoryUtilization", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}" ]
+                    [ "System/Linux", "DiskSpaceUtilization", "MountPath", "/", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", "Filesystem", "/dev/xvda1", { "label": "DiskSpaceUtilization", "color": "#1f77b4" } ],
+                    [ ".", "MemoryUtilization", "InstanceId", "${data.terraform_remote_state.training_kafka.kafka_instance_id}", { "color": "#ff7f0e", "label": "MemoryUtilization" } ],
+                    [ "AWS/EC2", "CPUUtilization", ".", "." ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
@@ -118,7 +123,8 @@ resource "aws_cloudwatch_dashboard" "main" {
                         "max": 100,
                         "min": 0
                     }
-                }
+                },
+                "stat": "Average"
             }
         },
         {
@@ -129,20 +135,21 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/ElasticMapReduce", "AppsRunning", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}" ],
-                    [ ".", "AppsPending", ".", "." ],
-                    [ ".", "ContainerReserved", ".", "." ]
+                    [ "AWS/ElasticMapReduce", "AppsRunning", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", { "color": "#2ca02c" } ],
+                    [ ".", "AppsPending", ".", ".", { "color": "#ff7f0e" } ],
+                    [ ".", "ContainerReserved", ".", ".", { "color": "#1f77b4" } ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
                 "region": "${var.aws_region}",
-                "period": 300
+                "period": 300,
+                "stat": "Average"
             }
         },
         {
             "type": "metric",
             "x": 12,
-            "y": 9,
+            "y": 12,
             "width": 12,
             "height": 3,
             "properties": {
@@ -170,13 +177,13 @@ resource "aws_cloudwatch_dashboard" "main" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "stationMart-monitoring", "last-update", "data", "stationMart" ]
+                    [ "stationMart-monitoring", "station-last-updated-age" ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
                 "region": "${var.aws_region}",
                 "stat": "Average",
-                "period": 60,
+                "period": 300,
                 "title": "Delivery File's Age",
                 "yAxis": {
                     "left": {
@@ -191,22 +198,49 @@ resource "aws_cloudwatch_dashboard" "main" {
             }
         },
         {
-            "view": "timeSeries",
-            "stacked": false,
-            "metrics": [
-                [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ],
-                [ "...", "StationInformationSaverApp" ],
-                [ "...", "StationStatusSaverApp" ]
-            ],
-            "region": "ap-southeast-1",
-            "title": "Application Status",
-            "period": 300,
-            "yAxis": {
-                "left": {
-                    "min": 0,
-                    "max": 1,
-                    "label": "is_app_running",
-                    "showUnits": false
+            "type": "metric",
+            "x": 0,
+            "y": 18,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "view": "singleValue",
+                "stacked": false,
+                "region": "${var.aws_region}",
+                "stat": "Average",
+                "period": 300,
+                "metrics": [
+                    [ "stationMart-monitoring", "station-last-updated-age" ]
+                ],
+                "title": "Station Last Updated Age (Median)",
+                "start": "-PT12H",
+                "end": "P0D"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 15,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "view": "timeSeries",
+                "stacked": false,
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ],
+                    [ "...", "StationInformationSaverApp" ],
+                    [ "...", "StationStatusSaverApp" ]
+                ],
+                "region": "${var.aws_region}",
+                "title": "Application Status",
+                "period": 300,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 1,
+                        "label": "is_app_running",
+                        "showUnits": false
+                    }
                 }
             }
         }
