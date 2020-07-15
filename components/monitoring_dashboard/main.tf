@@ -245,6 +245,78 @@ resource "aws_cloudwatch_dashboard" "main" {
             }
         },
         {
+            "type": "metric",
+            "x": 12,
+            "y": 27,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp", { "label": "StationDataSFSaverApp" } ],
+                    [ "...", "StationInformationSaverApp", { "label": "StationInformationSaverApp" } ],
+                    [ "...", "StationApp" ],
+                    [ "...", "StationTransformerNYC"],
+                    [ "...", "StationStatusSaverApp", { "label": "StationStatusSaverApp" } ],
+                    [ "ingester-monitoring", ".", "ApplicationName", "StationSFIngester", "InstanceId", "${data.terraform_remote_state.ingester.ingester_instance_id}", { "label": "StationSFIngester" } ],
+                    [ "...", "StationStatusIngester", { "label": "StationStatusIngester" } ],
+                    [ "...", "StationInformationIngester", ".", ".", { "label": "StationInformationIngester" } ],
+                    [ "...", "StationInformationIngesterMsk", ".", ".", { "label": "StationInformationIngesterMsk" } ],
+                    [ "...", "StationStatusIngesterMsk", ".", ".", { "label": "StationStatusIngesterMsk" } ],
+                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ],
+                ],
+                "view": "timeSeries",
+                "stacked": true,
+                "region": "ap-southeast-1",
+                "title": "Application Status History",
+                "period": 300,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 10,
+                        "label": "is_app_running",
+                        "showUnits": false
+                    }
+                },
+                "stat": "Average"
+            }
+        },
+                {
+            "type": "metric",
+            "x": 12,
+            "y": 15,
+            "width": 12,
+            "height": 12,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp", { "label": "StationDataSFSaverApp" } ],
+                    [ "...", "StationInformationSaverApp", { "label": "StationInformationSaverApp" } ],
+                    [ "...", "StationApp" ],
+                    [ "...", "StationTransformerNYC"],
+                    [ "...", "StationStatusSaverApp", { "label": "StationStatusSaverApp" } ],
+                    [ "ingester-monitoring", ".", "ApplicationName", "StationSFIngester", "InstanceId", "${data.terraform_remote_state.ingester.ingester_instance_id}", { "label": "StationSFIngester" } ],
+                    [ "...", "StationStatusIngester", { "label": "StationStatusIngester" } ],
+                    [ "...", "StationInformationIngester", ".", ".", { "label": "StationInformationIngester" } ],
+                    [ "...", "StationInformationIngesterMsk", ".", ".", { "label": "StationInformationIngesterMsk" } ],
+                    [ "...", "StationStatusIngesterMsk", ".", ".", { "label": "StationStatusIngesterMsk" } ],
+                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ],
+                ],
+                "view": "singleValue",
+                "stacked": true,
+                "region": "ap-southeast-1",
+                "title": "Application Status",
+                "period": 300,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 10,
+                        "label": "is_app_running",
+                        "showUnits": false
+                    }
+                },
+                "stat": "Average"
+            }
+        },
+        {
             "metrics": [
                 [ "AWS/ElasticMapReduce", "progress_num_input_rows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationApp" ],
                 [ "...", "StationDataSFSaverApp" ],
@@ -257,6 +329,27 @@ resource "aws_cloudwatch_dashboard" "main" {
             "stat": "SampleCount",
             "period": 300,
             "title": "Processed Rows"
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 21,
+            "width": 12,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "progress_num_input_rows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationApp" ],
+                    [ "...", "StationDataSFSaverApp" ],
+                    [ "...", "StationInformationSaverApp" ],
+                    [ "...", "StationStatusSaverApp" ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "SampleCount",
+                "period": 300,
+                "title": "Processed Rows"
+            }
         }
     ]
 }
