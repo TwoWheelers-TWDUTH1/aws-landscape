@@ -298,7 +298,6 @@ resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = "2wheelers-data_${var.cohort}"
   dashboard_body = <<EOF
 {
-    {
     "widgets": [
         {
             "type": "metric",
