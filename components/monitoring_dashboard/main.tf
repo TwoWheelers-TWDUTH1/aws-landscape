@@ -243,6 +243,20 @@ resource "aws_cloudwatch_dashboard" "main" {
                     }
                 }
             }
+        },
+        {
+            "metrics": [
+                [ "AWS/ElasticMapReduce", "progress_num_input_rows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationApp" ],
+                [ "...", "StationDataSFSaverApp" ],
+                [ "...", "StationInformationSaverApp" ],
+                [ "...", "StationStatusSaverApp" ]
+            ],
+            "view": "timeSeries",
+            "stacked": false,
+            "region": "ap-southeast-1",
+            "stat": "SampleCount",
+            "period": 300,
+            "title": "Processed Rows"
         }
     ]
 }
