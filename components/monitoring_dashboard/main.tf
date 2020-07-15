@@ -288,6 +288,36 @@ resource "aws_cloudwatch_dashboard" "main" {
                 },
                 "stat": "Average"
             }
+        }
+    ]
+}
+ EOF
+}
+
+resource "aws_cloudwatch_dashboard" "main" {
+  dashboard_name = "2wheelers-data_${var.cohort}"
+  dashboard_body = <<EOF
+{
+    {
+    "widgets": [
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "Average",
+                "period": 300,
+                "title": "SF-StationDataSaver-Row Processing"
+            }
         },
         {
             "type": "metric",
@@ -308,6 +338,96 @@ resource "aws_cloudwatch_dashboard" "main" {
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "Processed Rows"
+            }
+            "type": "metric",
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationInformationSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "Average",
+                "period": 300,
+                "title": "NYC-StationInformationSaver-Row Processing"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 3,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationStatusSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "Average",
+                "period": 300,
+                "title": "NYC-StationStatusSaver-Row Processing"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "SampleCount",
+                "period": 300,
+                "title": "SF-StationDataSaver-Input Rows"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 0,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationStatusSaverApp" ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "SampleCount",
+                "period": 300,
+                "title": "NYC-StationStatusSaver-Input Rows"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationInformationSaverApp" ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "ap-southeast-1",
+                "stat": "SampleCount",
+                "period": 300,
+                "title": "NYC-StationInformationSaver-Input Rows"
             }
         }
     ]
