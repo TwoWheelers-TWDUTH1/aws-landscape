@@ -312,7 +312,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "timeSeries",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "Average",
                 "period": 300,
                 "title": "SF-StationDataSaver-Row Processing"
@@ -337,7 +337,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "Processed Rows"
-            }
+            },
             "type": "metric",
             "x": 6,
             "y": 3,
@@ -350,7 +350,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "timeSeries",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "Average",
                 "period": 300,
                 "title": "NYC-StationInformationSaver-Row Processing"
@@ -369,7 +369,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "timeSeries",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "Average",
                 "period": 300,
                 "title": "NYC-StationStatusSaver-Row Processing"
@@ -387,7 +387,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "singleValue",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "SF-StationDataSaver-Input Rows"
@@ -405,7 +405,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "singleValue",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "NYC-StationStatusSaver-Input Rows"
@@ -423,7 +423,7 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 ],
                 "view": "singleValue",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "NYC-StationInformationSaver-Input Rows"
