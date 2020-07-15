@@ -294,7 +294,7 @@ resource "aws_cloudwatch_dashboard" "main" {
  EOF
 }
 
-resource "aws_cloudwatch_dashboard" "main" {
+resource "aws_cloudwatch_dashboard" "data_dashboard" {
   dashboard_name = "2wheelers-data_${var.cohort}"
   dashboard_body = <<EOF
 {
