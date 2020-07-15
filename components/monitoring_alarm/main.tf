@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "emr_station_data_sf_saver_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    JobFlowId       = data.terraform_remote_state.training_emr_cluster.emr_cluster_id
+    JobFlowId       = "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}"
     ApplicationName = "StationDataSFSaverApp"
   }
 }
@@ -56,7 +56,7 @@ resource "aws_cloudwatch_metric_alarm" "emr_station_information_saver_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    JobFlowId       = data.terraform_remote_state.training_emr_cluster.emr_cluster_id
+    JobFlowId       = "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}"
     ApplicationName = "StationInformationSaverApp"
   }
 }
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "emr_station_app_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    JobFlowId       = data.terraform_remote_state.training_emr_cluster.emr_cluster_id
+    JobFlowId       = "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}"
     ApplicationName = "StationApp"
   }
 }
@@ -92,7 +92,7 @@ resource "aws_cloudwatch_metric_alarm" "emr_station_transformer_nyc_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    JobFlowId       = data.terraform_remote_state.training_emr_cluster.emr_cluster_id
+    JobFlowId       = "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}"
     ApplicationName = "StationTransformerNYC"
   }
 }
@@ -110,7 +110,7 @@ resource "aws_cloudwatch_metric_alarm" "emr_station_status_saver_app_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    JobFlowId       = data.terraform_remote_state.training_emr_cluster.emr_cluster_id
+    JobFlowId       = "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}"
     ApplicationName = "StationStatusSaverApp"
   }
 }
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_sf_ingester_status" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationSFIngester"
   }
 }
@@ -146,7 +146,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_status_ingester_status"
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationStatusIngester"
   }
 }
@@ -164,7 +164,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_information_ingester_st
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationInformationIngester"
   }
 }
@@ -182,7 +182,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_information_ingester_ms
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationInformationIngesterMsk"
   }
 }
@@ -200,7 +200,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_status_ingester_msk_sta
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationStatusIngesterMsk"
   }
 }
@@ -218,7 +218,7 @@ resource "aws_cloudwatch_metric_alarm" "ingester_station_sf_ingester_msk_status"
   treat_missing_data  = "breaching"
 
   dimensions = {
-    InstanceId      = data.terraform_remote_state.ingester.ingester_instance_id
+    InstanceId      = "${data.terraform_remote_state.ingester.ingester_instance_id}"
     ApplicationName = "StationSFIngesterMsk"
   }
 }

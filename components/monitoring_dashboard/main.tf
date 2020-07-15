@@ -262,7 +262,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                     [ "...", "StationInformationIngester", ".", ".", { "label": "StationInformationIngester" } ],
                     [ "...", "StationInformationIngesterMsk", ".", ".", { "label": "StationInformationIngesterMsk" } ],
                     [ "...", "StationStatusIngesterMsk", ".", ".", { "label": "StationStatusIngesterMsk" } ],
-                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ],
+                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ]
                 ],
                 "view": "timeSeries",
                 "stacked": true,
@@ -280,7 +280,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                 "stat": "Average"
             }
         },
-                {
+        {
             "type": "metric",
             "x": 12,
             "y": 15,
@@ -298,7 +298,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                     [ "...", "StationInformationIngester", ".", ".", { "label": "StationInformationIngester" } ],
                     [ "...", "StationInformationIngesterMsk", ".", ".", { "label": "StationInformationIngesterMsk" } ],
                     [ "...", "StationStatusIngesterMsk", ".", ".", { "label": "StationStatusIngesterMsk" } ],
-                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ],
+                    [ "...", "StationSFIngesterMsk", ".", ".", { "label": "StationSFIngesterMsk" } ]
                 ],
                 "view": "singleValue",
                 "stacked": true,
@@ -315,20 +315,6 @@ resource "aws_cloudwatch_dashboard" "main" {
                 },
                 "stat": "Average"
             }
-        },
-        {
-            "metrics": [
-                [ "AWS/ElasticMapReduce", "progress_num_input_rows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationApp" ],
-                [ "...", "StationDataSFSaverApp" ],
-                [ "...", "StationInformationSaverApp" ],
-                [ "...", "StationStatusSaverApp" ]
-            ],
-            "view": "timeSeries",
-            "stacked": false,
-            "region": "ap-southeast-1",
-            "stat": "SampleCount",
-            "period": 300,
-            "title": "Processed Rows"
         },
         {
             "type": "metric",
