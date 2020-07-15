@@ -267,7 +267,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                     [ "...", "StationTransformerNYC"],
                     [ "...", "StationStatusSaverApp", { "label": "StationStatusSaverApp" } ],
                     [ "ingester-monitoring", ".", "ApplicationName", "StationSFIngester", "InstanceId", "${data.terraform_remote_state.ingester.ingester_instance_id}", { "label": "StationSFIngester" } ],
-                    [ "...", "StationStatusIngester", { "label": "StationStatusIngester" } ],
+                    [ "...", "StationStatusIngester", ".", ".", { "label": "StationStatusIngester" } ],
                     [ "...", "StationInformationIngester", ".", ".", { "label": "StationInformationIngester" } ],
                     [ "...", "StationInformationIngesterMsk", ".", ".", { "label": "StationInformationIngesterMsk" } ],
                     [ "...", "StationStatusIngesterMsk", ".", ".", { "label": "StationStatusIngesterMsk" } ],
