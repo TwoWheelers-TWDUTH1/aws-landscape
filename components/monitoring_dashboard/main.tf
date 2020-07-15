@@ -220,33 +220,6 @@ resource "aws_cloudwatch_dashboard" "main" {
         {
             "type": "metric",
             "x": 12,
-            "y": 15,
-            "width": 12,
-            "height": 6,
-            "properties": {
-                "view": "timeSeries",
-                "stacked": false,
-                "metrics": [
-                    [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ],
-                    [ "...", "StationInformationSaverApp" ],
-                    [ "...", "StationStatusSaverApp" ]
-                ],
-                "region": "${var.aws_region}",
-                "title": "Application Status",
-                "period": 300,
-                "yAxis": {
-                    "left": {
-                        "min": 0,
-                        "max": 1,
-                        "label": "is_app_running",
-                        "showUnits": false
-                    }
-                }
-            }
-        },
-        {
-            "type": "metric",
-            "x": 12,
             "y": 27,
             "width": 12,
             "height": 6,
@@ -266,7 +239,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                 ],
                 "view": "timeSeries",
                 "stacked": true,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "title": "Application Status History",
                 "period": 300,
                 "yAxis": {
@@ -302,7 +275,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                 ],
                 "view": "singleValue",
                 "stacked": true,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "title": "Application Status",
                 "period": 300,
                 "yAxis": {
@@ -331,7 +304,7 @@ resource "aws_cloudwatch_dashboard" "main" {
                 ],
                 "view": "timeSeries",
                 "stacked": false,
-                "region": "ap-southeast-1",
+                "region": "${var.aws_region}",
                 "stat": "SampleCount",
                 "period": 300,
                 "title": "Processed Rows"
