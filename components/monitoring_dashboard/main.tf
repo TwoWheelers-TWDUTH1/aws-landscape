@@ -219,10 +219,10 @@ resource "aws_cloudwatch_dashboard" "main" {
         },
         {
             "type": "metric",
-            "x": 12,
-            "y": 27,
+            "x": 0,
+            "y": 18,
             "width": 12,
-            "height": 6,
+            "height": 9,
             "properties": {
                 "metrics": [
                     [ "AWS/ElasticMapReduce", "is_app_running", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp", { "label": "StationDataSFSaverApp" } ],
