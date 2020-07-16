@@ -302,8 +302,65 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
         {
             "type": "metric",
             "x": 0,
-            "y": 3,
-            "width": 6,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ],
+                    [ ".", "task.recordsWritten", ".", ".", ".", ".", { "stat": "SampleCount" } ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "${var.aws_region}",
+                "stat": "Sum",
+                "period": 300,
+                "title": "SF-StationDataSaver-Input Rows"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationInformationSaverApp", { "stat": "Sum" } ],
+                    [ ".", "task.recordsWritten", ".", ".", ".", "." ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "${var.aws_region}",
+                "stat": "SampleCount",
+                "period": 300,
+                "title": "NYC-StationInformationSaver-Input Rows"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "metrics": [
+                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationStatusSaverApp" ],
+                    [ ".", "task.recordsWritten", ".", ".", ".", ".", { "stat": "SampleCount" } ]
+                ],
+                "view": "singleValue",
+                "stacked": false,
+                "region": "${var.aws_region}",
+                "stat": "Sum",
+                "period": 300,
+                "title": "NYC-StationStatusSaver-Input Rows"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 6,
+            "width": 3,
             "height": 6,
             "properties": {
                 "metrics": [
@@ -320,28 +377,9 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
         },
         {
             "type": "metric",
-            "x": 0,
-            "y": 21,
-            "width": 12,
-            "height": 6,
-            "properties": {
-                "metrics": [
-                    [ "AWS/ElasticMapReduce", "progress_num_input_rows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationApp" ],
-                    [ "...", "StationDataSFSaverApp" ],
-                    [ "...", "StationInformationSaverApp" ],
-                    [ "...", "StationStatusSaverApp" ]
-                ],
-                "view": "timeSeries",
-                "stacked": false,
-                "region": "${var.aws_region}",
-                "stat": "SampleCount",
-                "period": 300,
-                "title": "Processed Rows"
-            },
-            "type": "metric",
-            "x": 6,
-            "y": 3,
-            "width": 6,
+            "x": 3,
+            "y": 6,
+            "width": 3,
             "height": 6,
             "properties": {
                 "metrics": [
@@ -358,9 +396,9 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
         },
         {
             "type": "metric",
-            "x": 12,
-            "y": 3,
-            "width": 6,
+            "x": 6,
+            "y": 6,
+            "width": 3,
             "height": 6,
             "properties": {
                 "metrics": [
@@ -374,62 +412,72 @@ resource "aws_cloudwatch_dashboard" "data_dashboard" {
                 "period": 300,
                 "title": "NYC-StationStatusSaver-Row Processing"
             }
-        },
+        }
+    ]
+}
+
+{
+    "widgets": [
         {
             "type": "metric",
             "x": 0,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationDataSFSaverApp" ]
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "j-217L1IWLFAV67", "ApplicationName", "StationDataSFSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
                 ],
-                "view": "singleValue",
+                "view": "timeSeries",
                 "stacked": false,
-                "region": "${var.aws_region}",
-                "stat": "SampleCount",
+                "region": "ap-southeast-1",
+                "stat": "Average",
                 "period": 300,
-                "title": "SF-StationDataSaver-Input Rows"
+                "title": "SF-StationDataSaver-Row Processing"
             }
         },
         {
             "type": "metric",
-            "x": 12,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationStatusSaverApp" ]
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "j-217L1IWLFAV67", "ApplicationName", "StationInformationSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
                 ],
-                "view": "singleValue",
+                "view": "timeSeries",
                 "stacked": false,
-                "region": "${var.aws_region}",
-                "stat": "SampleCount",
+                "region": "ap-southeast-1",
+                "stat": "Average",
                 "period": 300,
-                "title": "NYC-StationStatusSaver-Input Rows"
+                "title": "NYC-StationInformationSaver-Row Processing"
             }
         },
         {
             "type": "metric",
             "x": 6,
-            "y": 0,
-            "width": 6,
-            "height": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/ElasticMapReduce", "numberOfInputRows", "JobFlowId", "${data.terraform_remote_state.training_emr_cluster.emr_cluster_id}", "ApplicationName", "StationInformationSaverApp" ]
+                    [ "AWS/ElasticMapReduce", "inputRowsPerSecond", "JobFlowId", "j-217L1IWLFAV67", "ApplicationName", "StationStatusSaverApp", { "id": "m1", "stat": "SampleCount", "color": "#2ca02c" } ],
+                    [ ".", "processedRowsPerSecond", ".", ".", ".", ".", { "id": "m2", "stat": "SampleCount", "color": "#d62728" } ]
                 ],
-                "view": "singleValue",
+                "view": "timeSeries",
                 "stacked": false,
-                "region": "${var.aws_region}",
-                "stat": "SampleCount",
+                "region": "ap-southeast-1",
+                "stat": "Average",
                 "period": 300,
-                "title": "NYC-StationInformationSaver-Input Rows"
+                "title": "NYC-StationStatusSaver-Row Processing"
             }
-        }
+        },
     ]
 }
+
+
  EOF
 }
